@@ -1,0 +1,86 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  frontmatter:
+    name: Skill frontmatter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml==6.0.2
+      - name: Check the frontmatter of each SKILL.md
+        run: python3 scripts/frontmatter.py
+
+  citations:
+    name: Citations between files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Check that every citation has a target
+        run: python3 scripts/citations.py
+
+  licenses:
+    name: License of each skill
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Check that each skill folder carries its LICENSE
+        run: python3 scripts/licenses.py
+
+  hooks:
+    name: Hook tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: The kit's hook
+        run: bash tests/kit-hook.sh
+      - name: The leaks hook
+        run: bash tests/leaks-hook.sh
+
+  leaks:
+    name: Leaks from the source project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      # The list comes from the LEAKS_LIST secret, which every run has: the
+      # repo takes PRs only from collaborators. Without it the script fails.
+      # A PR checks each of its commits; a push to main, the commits it brings,
+      # or everything reachable when it creates the branch.
+      - name: Check each commit, its content, message, author and committer
+        env:
+          LEAKS_LIST: ${{ secrets.LEAKS_LIST }}
+          JMB_LEAKS_FILE: ${{ runner.temp }}/leaks.txt
+          BASE: ${{ github.event.pull_request.base.sha }}
+          BEFORE: ${{ github.event.before }}
+          HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          printf '%s\n' "$LEAKS_LIST" > "$JMB_LEAKS_FILE"
+          if [ -n "$BASE" ]; then
+            range="$BASE..$HEAD"
+          elif [ -z "${BEFORE//0/}" ]; then
+            range="$HEAD"
+          else
+            range="$BEFORE..$HEAD"
+          fi
+          python3 scripts/leaks.py commits "$range"
