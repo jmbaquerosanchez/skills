@@ -22,7 +22,7 @@ The agent reads anything in the checkout and runs read-only commands, and leaves
 
 ## Landing the report
 
-A research report reaches `main` through a PR of its own, a flow PR like any other (the "Sequential flow" section of AGENTS.md). The session that launched the research lands it. When a subagent runs this skill for another skill, as `jmb-wayfinder`'s research subagents do, it stops at the uncommitted report and returns step 6 to the session that launched it.
+A research report reaches `main` through a PR of its own, a flow PR like any other (the "Sequential flow" section of AGENTS.md). The session that launched the research lands it: when this skill is invoked on its own, that is the invoking session, which lands the report once the background agent returns it. When a subagent runs this skill for another skill, as `jmb-wayfinder`'s research subagents do, it stops at the uncommitted report and returns step 6 to the session that launched it.
 
 That session lands its reports one after another, in its own checkout: one checkout has one HEAD, which agents committing in parallel would fight over, and preparing a worktree per report costs far more than the report. For each report:
 
