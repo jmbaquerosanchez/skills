@@ -120,6 +120,12 @@ _Avoid_: resolution, verdict
 **Pending review**:
 The state of a PR whose last review comment has no fixes comment after it. It is the signal on which `jmb-implement-ticket` starts its fixes and `jmb-sync` relaunches the PR.
 
+### Research
+
+**Research report**:
+The dated Markdown snapshot a research leaves in the repo, `docs/research/<YYYY-MM-DD>-<slug>.md` unless the repo already keeps such notes elsewhere. It reaches `main` through a PR of its own and is frozen there: later research supersedes it instead of editing it.
+_Avoid_: findings, since a finding is an item of a review report; research note
+
 ### Building the kit
 
 **Rehearsal**:
