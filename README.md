@@ -21,7 +21,17 @@ Every skill carries the `jmb-` prefix, the copies too, so that a name does not c
 
 ## Installing in a project
 
-You need Claude Code, Node.js for `npx`, and a git repo with its remote on GitHub and `gh` authenticated. At the root of the project:
+You need Claude Code, Node.js for `npx`, `gh` authenticated, and a git repo with its remote on GitHub and at least one commit on `main`. A repo created on GitHub with a README or a license already has it; one created empty gets it with these commands, in the clone:
+
+```bash
+git commit --allow-empty -m "chore: initial commit"
+git branch -M main
+git push -u origin main
+```
+
+The commit is empty so that everything else reaches `main` through a PR, and `git branch -M main` names the branch whatever git's default is.
+
+Then, at the root of the project:
 
 1. **The kit**, at project level and whole:
 
