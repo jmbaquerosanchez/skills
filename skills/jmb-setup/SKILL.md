@@ -28,6 +28,18 @@ The hook, [block-dangerous-git.sh](block-dangerous-git.sh), lives in this folder
 
 1. **Explore.** Read what is there, without assuming:
    - The remote, with `git remote -v`. If it is not on GitHub, stop: the flow skills use `gh`, step 5 changes the repo's settings on GitHub and `jmb-review-pr` counts on issues and PRs sharing one numbering.
+   - The remote's branches, with `git ls-remote --heads origin`. If it prints nothing, the remote has no branch at all, and the setup's PR would have no `main` to target. The root commit is the human's: hand them, for their terminal, the commands that fit the local state, and wait.
+     - No local commits (`git rev-parse --verify -q HEAD` prints nothing): an empty commit, and the branch named `main` whatever the machine's `init.defaultBranch`:
+
+       ```bash
+       git commit --allow-empty -m "chore: initial commit"
+       git branch -M main
+       git push -u origin main
+       ```
+
+     - Local commits never pushed: `git branch -M main` and `git push -u origin main`, which push the project's history.
+
+     When the human says it is done, list the branches again and carry on from there, in this same run. If the human declines, stop. A remote with branches, even with none named `main`, is not empty: carry on.
    - The hook, installed in the project at the path that [templates/settings.json](templates/settings.json) hooks. If it is not there, the hook would fail on startup and guard nothing: stop and ask for the kit to be installed in the project with `npx skills add`, not only at user level.
    - `AGENTS.md` and `CLAUDE.md`: which one exists, whether `CLAUDE.md` is a symlink to `AGENTS.md`, whether the markers are already there, whether there is a "Cross-cutting criteria" section and whether there are, outside the markers, a languages table, an "Agent skills" section or a section that already describes the flow. That last one has no fixed name: it is recognized by its content (branches, PRs, commits, merge).
    - `docs/agents/issue-tracker.md`, `triage-labels.md` and `domain.md`: whether each one exists, whether it has the markers and, outside them, which sections share a heading with its template. `setup-matt-pocock-skills`, from Matt's kit, wrote them without markers.
@@ -37,7 +49,7 @@ The hook, [block-dangerous-git.sh](block-dangerous-git.sh), lives in this folder
    - `.claude/settings.json` and `.gitignore`.
    - The repo's merge settings, with the read of step 5.
 
-   Done when you know, for each row of the table above, whether it is missing, up to date or what changes.
+   Done when the remote has at least one branch and you know, for each row of the table above, whether it is missing, up to date or what changes.
 2. **`AGENTS.md`.** The block goes in `AGENTS.md`, because the flow skills cite it by that name, and Claude Code loads `CLAUDE.md`, which is a symlink to it. Always edit `AGENTS.md`: editing tools do not write through the symlink.
    - There is only a `CLAUDE.md`, and it is a file: propose moving it to `AGENTS.md` and leaving `CLAUDE.md` as a symlink (`git mv CLAUDE.md AGENTS.md && ln -s AGENTS.md CLAUDE.md`). If the human does not accept, stop: the skills would not find the block.
    - There is an `AGENTS.md` and `CLAUDE.md` is missing: propose the symlink.
