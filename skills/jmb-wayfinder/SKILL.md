@@ -26,7 +26,7 @@ The map is an **index**, not a store. It lists the decisions made and points at 
 
 ### The map body
 
-The whole map at low resolution, loaded once per session. Open tickets are **not** listed: they are open child issues, found by query.
+The whole map at low resolution, loaded once per session. Unresolved tickets are **not** listed: they are open child issues, found by query.
 
 ```markdown
 ## Destination
@@ -39,9 +39,9 @@ The whole map at low resolution, loaded once per session. Open tickets are **not
 
 ## Decisions so far
 
-<!-- the index: one line per closed ticket, enough to judge relevance, then zoom the link for the detail the ticket holds -->
+<!-- the index: one line per resolved ticket, enough to judge relevance, then zoom the link for the detail the ticket holds -->
 
-- [<closed ticket title>](link): <one-line gist of the answer>
+- [<resolved ticket title>](link): <one-line gist of the answer>
 
 ## Not yet specified
 
@@ -75,6 +75,7 @@ The answer isn't part of the body; it's recorded on resolution (see [Work throug
 Every ticket is either **HITL** (human in the loop, worked _with_ a human who speaks for themselves) or **AFK**, driven by the agent alone. A HITL ticket only resolves through that live exchange; the agent never stands in for the human's side of it (a grilling agent that answers its own questions has broken this).
 
 - **Research** (AFK): Reading documentation, third-party APIs, or local resources like knowledge bases to surface a fact a decision waits on. Resolved by a subagent that calls the Skill tool with "jmb-research". Use when knowledge outside the current working directory is required. Its research report reaches `main` through a PR of its own:
+  - **Claiming.** The session that fires the subagent claims the ticket first, while charting too: the ticket stays open until its PR merges, and the claim keeps it off the frontier until then.
   - **Landing.** The subagent writes its report in place and nothing to git; the session that launched it lands each report in turn on the ticket's own `<n>-<slug>` branch and PR, returning to `main` before the next, as [Landing the report](../jmb-research/SKILL.md#landing-the-report) in `jmb-research` says.
   - **Recording.** When the PR opens, that session posts the resolution comment (the gist and a link to the report's path on `main`) and appends the map's Decisions-so-far line, but leaves the ticket open: the PR's `Closes #<n>` closes it on merge, which is when the human reads the report and the tickets it blocks are unblocked.
 - **Prototype** (HITL): Raise the fidelity of the discussion by making a cheap, rough, concrete artifact to react to (an outline, a rough take, a stub, or UI/logic code) by calling the Skill tool with "jmb-prototype". Links the prototype as an asset. Use when "how should it look" or "how should it behave" is the key question.
