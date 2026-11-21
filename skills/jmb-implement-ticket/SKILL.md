@@ -15,8 +15,8 @@ What is specific to the project comes from `docs/agents/flow.md`: each § is one
 ## Steps
 
 1. **Context.** The ticket (`gh issue view <n> --comments`), the spec sections it cites (*Path* of § Spec) and the ADRs of the area you are going to touch (where they live, in `docs/agents/domain.md`). Done when you can list the ticket's acceptance criteria and say which seam tests each one.
-2. **State.** With `git branch --show-current`, `gh pr list --head <n>-<slug> --state open` and, if there is a PR, its comments (`gh pr view <pr> --json comments`). The first case that matches:
-   - **PR with a pending review**, per the signal in [../jmb-review-pr/protocol.md](../jmb-review-pr/protocol.md). Jump to [Fixes after review](#fixes-after-review).
+2. **State.** With `git branch --show-current`, `gh pr list --head <n>-<slug> --state open` and, if there is a PR, whether it has a pending review: [pending-review.sh](../jmb-review-pr/pending-review.sh) decides it (see [../jmb-review-pr/protocol.md](../jmb-review-pr/protocol.md#pending-review)), and you do not read the comments yourself. Run it as `bash <this skill's base directory>/../jmb-review-pr/pending-review.sh <pr>`, by absolute path, which works from the main checkout and from a worktree alike. Exit `0` is the first case below; `1`, the cases after it; `2`, it could not answer: stop and report. The first case that matches:
+   - **PR with a pending review**: the script exited `0`, and what it printed is the review comment. Jump to [Fixes after review](#fixes-after-review).
    - **No branch**, meaning `<n>-<slug>` exists neither locally nor on `origin`: `git checkout -b <n>-<slug>` (the slug comes from the title, without accents; in its own Bash call). Continue at 3.
    - **Branch created and you are not on it**, the main checkout's case: `git checkout <n>-<slug>` with a clean tree (`git status --porcelain` empty, or stop) and `git pull --ff-only` to bring in what was pushed. Continue at whichever case applies.
    - **Branch without a PR**: continue at 3.
@@ -36,7 +36,7 @@ The human launched `jmb-review-pr <n>` and the PR has a **pending review**. Addr
 
 1. **To draft.** `gh pr ready --undo`. While you fix, "ready" cannot keep meaning "waiting for the human", and `jmb-review-pr` refuses to review a draft PR: that way nobody reviews a half-fixed branch.
 2. **Get your bearings**, always, whether you are the first or the one taking over from one that died:
-   - the review comment → the findings, in their order, and the `<reviewed head>` of its first line;
+   - the review comment, which `pending-review.sh` printed in step 2 → the findings, in their order, and the `<reviewed head>` of its first line;
    - `git log <reviewed head>..HEAD --oneline` → what has been done since the review;
    - `git status --porcelain` → what was left uncommitted.
 
