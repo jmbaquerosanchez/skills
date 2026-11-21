@@ -19,9 +19,9 @@ The tickets cite its sections in their `Spec:` line. It does not exist yet: `/jm
 
 ## Verification
 
-What runs at each moment, with its why when it is not obvious. The three are the same list, what CI runs, because all of it takes seconds. `frontmatter.py` needs PyYAML. The leaks check goes last: it reads the branch's commits and needs the machine's list, which `user/README.md` sets up; without it, it fails instead of letting through.
+What runs at each moment, with its why when it is not obvious. The three are the same list, what CI runs, because all of it takes seconds. `frontmatter.py` needs PyYAML, and `tests/pending-review.sh` needs jq, which only these checks use: the projects that receive the script do not. The leaks check goes last: it reads the branch's commits and needs the machine's list, which `user/README.md` sets up; without it, it fails instead of letting through.
 
-- **Quick**: `python3 scripts/frontmatter.py && python3 scripts/citations.py && python3 scripts/licenses.py && bash tests/kit-hook.sh && bash tests/leaks-hook.sh && python3 scripts/leaks.py commits origin/main..HEAD`
+- **Quick**: `python3 scripts/frontmatter.py && python3 scripts/citations.py && python3 scripts/licenses.py && bash tests/kit-hook.sh && bash tests/leaks-hook.sh && bash tests/pending-review.sh && python3 scripts/leaks.py commits origin/main..HEAD`
 - **Full**: the same as *Quick*.
 - **Before pushing**: the same as *Quick*.
 
@@ -32,6 +32,7 @@ The project's agreed seams. `/jmb-tdd` only writes tests at agreed seams, and an
 | Seam | What is tested there | Where its tests and doubles live | Command for one file |
 |---|---|---|---|
 | The hooks | What each hook, the kit's and the leaks one, blocks and lets through: the JSON of a Bash call on stdin, launched the way `.claude/settings.json` hooks it, and only the exit code checked; also the exit codes of `leaks.py commits`. A hook that fails lets a commit reach `main` unseen. | `tests/`, one file per hook; the leaks one with a made-up list, never the real one | `bash <file>` |
+| The skills' scripts | The exit code and stdout of each script that a skill carries in its folder, for each state of what it reads: `pending-review.sh`, for each sequence of PR comments. A double of `gh` goes first on a `PATH` with nothing else, and answers with `jq -r` on a fixture, so the test runs the exact expression the script ships and the script can call nothing but `gh`. | `tests/`, one file per script, no network | `bash <file>` |
 
 ## Worktree
 

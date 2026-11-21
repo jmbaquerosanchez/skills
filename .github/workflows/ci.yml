@@ -53,6 +53,16 @@ jobs:
       - name: The leaks hook
         run: bash tests/leaks-hook.sh
 
+  scripts:
+    name: Script tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      # The tests need jq, which the runner carries; the projects that receive
+      # the scripts do not.
+      - name: pending-review.sh, of jmb-review-pr
+        run: bash tests/pending-review.sh
+
   leaks:
     name: Leaks from the source project
     runs-on: ubuntu-latest
