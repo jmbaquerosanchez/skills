@@ -2,7 +2,7 @@
 
 The user preferences live in [CLAUDE.md](CLAUDE.md). They reach every Claude Code session, subagents included, through `~/.claude/CLAUDE.md`, and the `attribution` setting of `~/.claude/settings.json` reinforces the one about attribution. They are installed once per machine, with the repo cloned at `~/code/jmbaquerosanchez/skills`.
 
-Working on this repo also asks for two things on each machine, the [commit email](#commit-email) and the [leaks list](#leaks-list), and two settings of the GitHub account.
+Working on this repo also asks for two settings of the GitHub account and three things on each machine: the [commit email](#commit-email), the [leaks list](#leaks-list) and the tools the checks need, which [§ Verification](../docs/agents/flow.md#verification) of `docs/agents/flow.md` names next to each check.
 
 ## `~/.claude/CLAUDE.md`
 
