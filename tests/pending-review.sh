@@ -9,7 +9,8 @@
 # The script runs with a PATH that holds only a double of gh, so it can call
 # nothing else: neither jq nor python3 nor anything that writes. The double
 # takes only `gh pr view <pr> --json comments --jq <expr>`, logs the PR it was
-# asked for and answers by running `jq -r <expr>` on the case's comments, so
+# asked for (or the whole call, if it is any other) and answers by running
+# `jq -r <expr>` on the case's comments, so
 # what runs is the exact expression the script ships. gh embeds gojq, which
 # behaves like jq for what that expression uses. These tests need jq; the
 # projects that receive the script do not.
@@ -30,11 +31,12 @@ mkdir "$TMP/bin"
 {
   echo "#!$BASH"
   cat <<'EOF'
-printf '%s\n' "$3" >>"$DOUBLE/calls"
 if [ $# -ne 7 ] || [ "$1 $2" != "pr view" ] || [ "$4 $5 $6" != "--json comments --jq" ]; then
+  printf 'unexpected: gh %s\n' "$*" >>"$DOUBLE/calls"
   echo "gh double: unexpected call: gh $*" >&2
   exit 99
 fi
+printf '%s\n' "$3" >>"$DOUBLE/calls"
 [ -z "${GH_FAILS:-}" ] || exit "$GH_FAILS"
 exec "$JQ" -r "$7" "$DOUBLE/comments.json"
 EOF
@@ -61,7 +63,7 @@ FAILURES=0
 fail() {
   FAILURES=$((FAILURES + 1))
   echo "FAIL $1"
-  [ -s "$TMP/err" ] && sed 's/^/    /' "$TMP/err"
+  if [ -s "$TMP/err" ]; then sed 's/^/    /' "$TMP/err"; fi
 }
 
 # Checks the code, the exact stdout and the gh calls of the last run: $2 is
