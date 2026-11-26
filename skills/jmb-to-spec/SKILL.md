@@ -10,7 +10,7 @@ The issue tracker and triage label vocabulary should have been provided to you. 
 
 ## Reading a map
 
-Only with a map; without one, go to [Process](#process). A map is an index: each decision lives in its ticket's **resolution comment**, and the map holds only a one-line gist and a link, so the spec comes from the tickets. The map body's sections are those of [The map body](../jmb-wayfinder/SKILL.md#the-map-body) in `jmb-wayfinder`: Destination, Notes, Decisions so far, Not yet specified and Out of scope. The tracker doc's "Wayfinding operations" section says how this repo finds the map's child tickets.
+Only with a map; without one, go to [Process](#process). The spec comes from the map's tickets, not from the map: each decision lives in its ticket's **resolution comment**. The map body's sections are those of [The map body](../jmb-wayfinder/SKILL.md#the-map-body) in `jmb-wayfinder`: Destination, Notes, Decisions so far, Not yet specified and Out of scope. The tracker doc's "Wayfinding operations" section says how this repo finds the map's child tickets.
 
 1. **Readiness.** The map has to be finished, as [Hand off to the spec](../jmb-wayfinder/SKILL.md#hand-off-to-the-spec) in `jmb-wayfinder` defines it. If it is not, stop before writing anything and name, by title, the open tickets and the fog left in Not yet specified.
 2. **Read.** From the map: Destination and Notes, which bind the spec as constraints; Decisions so far; Out of scope. For each ticket listed in Decisions so far: its body (the question), all its comments, and whatever its resolution comment links (the research report on `main`, a prototype's assets). The resolution comment prevails over the rest of the ticket's discussion.
