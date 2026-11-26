@@ -8,6 +8,10 @@ This skill takes the current conversation context and codebase understanding and
 
 The issue tracker and triage label vocabulary should have been provided to you. If not, tell the user to run `/jmb-setup`.
 
+## Start on `main`
+
+The spec reaches `main` through a PR of its own, on a branch cut from an up-to-date `main` (see [Landing the spec](#landing-the-spec)). Before reading or writing anything, `git branch --show-current`: on `main`, `git pull --ff-only`; on any other branch, or if the pull fails, stop and tell the user why. Done when you are on `main`, up to date with `origin/main`.
+
 ## Reading a map
 
 Only with a map; without one, go to [Process](#process). The spec comes from the map's tickets, not from the map: each decision lives in its ticket's **resolution comment**. The map body's sections are those of [The map body](../jmb-wayfinder/SKILL.md#the-map-body) in `jmb-wayfinder`: Destination, Notes, Decisions so far, Not yet specified and Out of scope. The tracker doc's "Wayfinding operations" section says how this repo finds the map's child tickets.
@@ -26,7 +30,7 @@ Done when you hold the resolution of every ticket in Decisions so far, with what
 
 Check with the user that these seams match their expectations.
 
-3. Write the spec using the template below, then publish it where the tracker doc says a spec goes. With a map, tell the user that the spec's branch takes the map's number (`<map>-<slug>`) and its PR carries `Closes #<map>`, so the map closes on merge, once the human has read the spec.
+3. Write the spec using the template below, publish it where the tracker doc says a spec goes, and [land it](#landing-the-spec) right away.
 
 <spec-template>
 
@@ -87,3 +91,15 @@ Any further notes about the feature.
 With a map, link it here.
 
 </spec-template>
+
+## Landing the spec
+
+The spec reaches `main` through a PR of its own, a flow PR like any other (the "Sequential flow" section of AGENTS.md), opened as soon as the spec is written, without asking first: the human reads the spec on the PR, and the ready after green CI tells them it is their turn.
+
+1. `git checkout -b <map>-<slug>` with a map, `docs-<slug>` without one, in its own Bash call.
+2. `git add` the spec file by name, alone; commit with the why: the map, or the conversation, that the spec synthesizes.
+3. `git push -u origin HEAD` and `gh pr create --draft`. With a map, the title is `docs: <what it specifies> (#<map>)` and the body carries `Closes #<map>`, so the map closes on merge; without one, the title ends at the gist and the body closes nothing.
+4. `gh pr checks --watch`: green, `gh pr ready`; red, fix the failure on the spec's branch, push and watch again.
+5. `git checkout main`.
+
+Give the user the PR's URL: `/jmb-review-pr` on it runs only at their request, and the fixes it asks for are made in an ordinary session, not with `jmb-implement-ticket`. Done when the PR is ready with green CI and you are back on `main`.

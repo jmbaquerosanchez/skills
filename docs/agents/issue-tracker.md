@@ -39,8 +39,8 @@ The spec goes to the file of *Path* in § Spec of `docs/agents/flow.md`. The flo
 - **No issue and no label.** The spec is not a ticket, and with *Label* of § Tickets it would enter the frontier of `jmb-implement-frontier`.
 - **With the section of *Analogies*** of § Spec, even if it is empty: that is where what a branch resolves by analogy with something already decided will go.
 - **If the file already has a spec**, ask before writing whether the new one extends it or replaces it.
-- **It stays uncommitted**: it reaches `main` through a branch and its PR, like any change.
-- `/jmb-to-tickets` receives it by its path, and the tickets cite its sections in their `Spec:` line.
+- **It reaches `main` through a PR of its own**, which `/jmb-to-spec` opens as soon as it writes the spec.
+- `/jmb-to-tickets` receives it by its path, only once it is on `main`, and the tickets cite its sections in their `Spec:` line.
 
 ## When a skill says "fetch the relevant ticket"
 
