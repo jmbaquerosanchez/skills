@@ -123,9 +123,16 @@ User invokes with a loose idea.
 User invokes with a map (URL or number). A ticket is **optional**: without one, you pick the next decision, not the user.
 
 1. Load the **map**: the low-res view, not every ticket body.
-2. Choose the ticket. If the user named one, use it. Otherwise take the first frontier ticket in order. **Claim it**: assign it to yourself before any work.
+2. Choose the ticket. If the user named one, use it. Otherwise take the first frontier ticket in order. **Claim it**: assign it to yourself before any work. With an empty frontier there is nothing to choose: [hand off](#hand-off-to-the-spec) if the map is finished or waits only on research PRs, and stop.
 3. Resolve it as the type its `wayfinder:<type>` label names (see [Ticket Types](#ticket-types)). Read the label, not just the body: the body never states the type. **Zoom as needed**: fetch the full body of any related or closed ticket on demand; call the Skill tool for whichever skills the `## Notes` block names. If in doubt, call the Skill tool twice, for "jmb-grilling" and "jmb-domain-modeling".
 4. Record the resolution: post the answer as a **resolution comment**, **close** the issue, and **append a context pointer** to the map's Decisions-so-far. A research ticket is recorded when its PR opens and closes on the merge, as the Research bullet of [Ticket Types](#ticket-types) says.
 5. Add newly-surfaced tickets (create-then-wire); graduate any fog the answer has made specifiable, clearing each graduated patch from **Not yet specified** so it lives only as its new ticket. If the answer reveals that a ticket (this one or another) sits beyond the destination, **rule it out of scope** rather than resolving it on the route. If the decision invalidates other parts of the map, update or delete those tickets.
+6. If the map is now finished or waits only on research PRs, [hand off](#hand-off-to-the-spec).
 
 The user may run unblocked tickets in parallel, so expect other sessions to be editing the tracker concurrently.
+
+### Hand off to the spec
+
+Only for a map whose Destination is a spec. The map is **finished** when every child ticket is closed and **Not yet specified** is empty: the way is clear, and the next step is `/jmb-to-spec <map>`, which builds the spec from the map's tickets. It is user-invoked, so you can't call it: tell the user to run it, with the map's number.
+
+If **Not yet specified** is empty and the only open tickets are research tickets whose PRs are still open, tell the user to run it once those PRs merge, naming the tickets by title. Any other open ticket, claimed by another session or blocked, means the map isn't finished, and the hand-off waits for it.

@@ -126,6 +126,16 @@ The state of a PR whose last review comment has no fixes comment after it. It is
 The dated Markdown snapshot a research leaves in the repo, `docs/research/<YYYY-MM-DD>-<slug>.md` unless the repo already keeps such notes elsewhere. It reaches `main` through a PR of its own and is frozen there: later research supersedes it instead of editing it.
 _Avoid_: findings, since a finding is an item of a review report; research note
 
+### Wayfinding
+
+**Map**:
+The issue labelled `wayfinder:map` that indexes an effort's decision tickets. `jmb-to-spec` takes it as input when the destination is a spec.
+_Avoid_: plan, roadmap
+
+**Resolution comment**:
+The comment where a map ticket leaves its answer, which prevails over the rest of its discussion.
+_Avoid_: answer, decision comment
+
 ### Building the kit
 
 **Rehearsal**:
