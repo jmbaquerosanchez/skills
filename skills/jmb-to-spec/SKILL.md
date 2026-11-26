@@ -1,12 +1,22 @@
 ---
 name: jmb-to-spec
-description: "Turn the current conversation into a spec and publish it to the project issue tracker: no interview, just synthesis of what you've already discussed."
+description: "Turn the current conversation, or a finished wayfinder map, into a spec and publish it: no interview, just synthesis of what has already been decided."
 disable-model-invocation: true
 ---
 
-This skill takes the current conversation context and codebase understanding and produces a spec. Do NOT interview the user; just synthesize what you already know.
+This skill takes the current conversation context and codebase understanding and produces a spec. The user may pass a wayfinder map instead (`/jmb-to-spec <map>`, its number or URL): then the map is the source, not the conversation. Do NOT interview the user; just synthesize what you already know.
 
 The issue tracker and triage label vocabulary should have been provided to you. If not, tell the user to run `/jmb-setup`.
+
+## Reading a map
+
+Only with a map; without one, go to [Process](#process). The spec comes from the map's tickets, not from the map: each decision lives in its ticket's **resolution comment**. The map body's sections are those of [The map body](../jmb-wayfinder/SKILL.md#the-map-body) in `jmb-wayfinder`: Destination, Notes, Decisions so far, Not yet specified and Out of scope. The tracker doc's "Wayfinding operations" section says how this repo finds the map's child tickets.
+
+1. **Readiness.** The map has to be finished, as [Hand off to the spec](../jmb-wayfinder/SKILL.md#hand-off-to-the-spec) in `jmb-wayfinder` defines it. If it is not, stop before writing anything and name, by title, the open tickets and the fog left in Not yet specified.
+2. **Read.** From the map: Destination and Notes, which bind the spec as constraints; Decisions so far; Out of scope. For each ticket listed in Decisions so far: its body (the question), all its comments, and whatever its resolution comment links (the research report on `main`, a prototype's assets). The resolution comment prevails over the rest of the ticket's discussion.
+3. **Contradictions.** If two resolutions contradict each other, stop and name both tickets by title. Fixing that is map work, for another `/jmb-wayfinder` session, not spec work.
+
+Done when you hold the resolution of every ticket in Decisions so far, with what it links, and no two contradict each other.
 
 ## Process
 
@@ -16,7 +26,7 @@ The issue tracker and triage label vocabulary should have been provided to you. 
 
 Check with the user that these seams match their expectations.
 
-3. Write the spec using the template below, then publish it to the project issue tracker. Apply the `ready-for-agent` triage label - no need for additional triage.
+3. Write the spec using the template below, then publish it where the tracker doc says a spec goes. With a map, tell the user that the spec's branch takes the map's number (`<map>-<slug>`) and its PR carries `Closes #<map>`, so the map closes on merge, once the human has read the spec.
 
 <spec-template>
 
@@ -68,8 +78,12 @@ A list of testing decisions that were made. Include:
 
 A description of the things that are out of scope for this spec.
 
+With a map, each line of its Out of scope section is an item here, taken from the line without reading its closed ticket. Your own synthesis may add more.
+
 ## Further Notes
 
 Any further notes about the feature.
+
+With a map, link it here.
 
 </spec-template>
