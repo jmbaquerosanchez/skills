@@ -107,7 +107,7 @@ _Avoid_: reintegrate, rebase, update
 The flow's only review: `jmb-review-pr` on a ready PR, at the maintainer's request, along the Standards and Spec axes. It leaves its report as a comment on the PR.
 
 **Finding**:
-One item of a review report.
+One item of a review report or of a resolution review.
 _Avoid_: issue, comment, remark
 
 **Fixes comment**:
@@ -135,6 +135,10 @@ _Avoid_: plan, roadmap
 **Resolution comment**:
 The comment where a map ticket leaves its answer, which prevails over the rest of its discussion.
 _Avoid_: answer, decision comment
+
+**Resolution review**:
+The optional review of a resolution comment before it is recorded, by a fresh-context subagent at the maintainer's request. It is not part of the flow and leaves no comment.
+_Avoid_: review alone, which is `jmb-review-pr`'s
 
 ### Building the kit
 

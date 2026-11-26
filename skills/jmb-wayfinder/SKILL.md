@@ -125,11 +125,23 @@ User invokes with a map (URL or number). A ticket is **optional**: without one, 
 1. Load the **map**: the low-res view, not every ticket body.
 2. Choose the ticket. If the user named one, use it. Otherwise take the first frontier ticket in order. **Claim it**: assign it to yourself before any work. With an empty frontier there is nothing to choose: go to step 6.
 3. Resolve it as the type its `wayfinder:<type>` label names (see [Ticket Types](#ticket-types)). Read the label, not just the body: the body never states the type. **Zoom as needed**: fetch the full body of any related or closed ticket on demand; call the Skill tool for whichever skills the `## Notes` block names. If in doubt, call the Skill tool twice, for "jmb-grilling" and "jmb-domain-modeling".
-4. Record the resolution: post the answer as a **resolution comment**, **close** the issue, and **append a context pointer** to the map's Decisions-so-far. A research ticket is recorded when its PR opens and closes on the merge, as the Research bullet of [Ticket Types](#ticket-types) says.
+4. Record the resolution: post the answer as a **resolution comment**, **close** the issue, and **append a context pointer** to the map's Decisions-so-far. A grilling or prototype ticket is recorded only once the human confirms its resolution, as [Confirm the resolution](#confirm-the-resolution) says. A research ticket is recorded when its PR opens and closes on the merge, as the Research bullet of [Ticket Types](#ticket-types) says.
 5. Add newly-surfaced tickets (create-then-wire); graduate any fog the answer has made specifiable, clearing each graduated patch from **Not yet specified** so it lives only as its new ticket. If the answer reveals that a ticket (this one or another) sits beyond the destination, **rule it out of scope** rather than resolving it on the route. If the decision invalidates other parts of the map, update or delete those tickets.
 6. Check the [hand-off to the spec](#hand-off-to-the-spec).
 
 The user may run unblocked tickets in parallel, so expect other sessions to be editing the tracker concurrently.
+
+### Confirm the resolution
+
+A grilling or prototype ticket is resolved with the human, so the human confirms its resolution before step 4 records it: later tickets refine it, and for a map whose Destination is a spec, `/jmb-to-spec` builds the spec from it without interviewing anyone. Present the resolution comment **exactly as it will be posted**, and act on the reply:
+
+- **Confirmed**: record it.
+- **Changes asked for**: edit it and present it again.
+- **A resolution review asked for**: run it (below) and show its report. The human picks the findings to fix; edit the resolution and present it again. They may ask for another review.
+
+**The resolution review** is one `general-purpose` subagent with a fresh context window, on your own model (no `model` override). Paste [RESOLUTION-REVIEW.md](RESOLUTION-REVIEW.md) whole into its prompt, since the subagent has no other way to see it, followed by the draft resolution, the ticket (body, comments and `wayfinder:<type>` label) and the map's body. It reads the rest by itself and changes nothing.
+
+Its report goes to the chat only. Nothing about the review reaches the tracker, and the resolution comment carries no "reviewed" line: the findings quote a draft that is never published. When the human keeps a refinement of an earlier decision against a finding, the resolution states it as a refinement.
 
 ### Hand off to the spec
 
