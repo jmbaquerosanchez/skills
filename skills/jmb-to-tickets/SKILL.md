@@ -16,6 +16,8 @@ The issue tracker and triage label vocabulary should have been provided to you. 
 
 Work from whatever is already in the conversation context. If the user passes a reference (a spec path, an issue number or URL) as an argument, fetch it and read its full body and comments.
 
+The spec is taken only once it is on `main`: the tickets cite its sections, and their branches, cut from `main`, have to be able to read them. Given the spec's path (the tracker doc says where the spec goes), `git fetch origin` first; if `git status --porcelain -- <path>` prints anything (uncommitted changes, an untracked file included) or `git diff --quiet origin/main -- <path>` exits non-zero (the file differs from `origin/main`), stop before drafting and tell the user to come back once the spec's PR merges.
+
 ### 2. Explore the codebase (optional)
 
 If you have not already explored the codebase, do so to understand the current state of the code. Ticket titles and descriptions should use the project's domain glossary vocabulary, and respect ADRs in the area you're touching.

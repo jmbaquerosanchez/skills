@@ -126,6 +126,10 @@ The state of a PR whose last review comment has no fixes comment after it. It is
 The dated Markdown snapshot a research leaves in the repo, `docs/research/<YYYY-MM-DD>-<slug>.md` unless the repo already keeps such notes elsewhere. It reaches `main` through a PR of its own and is frozen there: later research supersedes it instead of editing it.
 _Avoid_: findings, since a finding is an item of a review report; research note
 
+**Spec**:
+The document that turns a feature's decisions into the user stories and implementation decisions its tickets cite. It reaches `main` through a PR of its own before it is broken into tickets.
+_Avoid_: PRD
+
 ### Wayfinding
 
 **Map**:

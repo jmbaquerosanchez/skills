@@ -14,7 +14,7 @@ What is specific to the project comes from `docs/agents/flow.md`: each § is one
 
 ## Steps
 
-1. **The PR.** GitHub shares the number space, so `<n>` works as a PR and as a ticket: `gh pr view <n>` succeeds → that PR; it fails → the open PR whose branch starts with `<n>-` (`gh pr list --state open --json number,headRefName,isDraft`). Without a PR, stop and say so. Done when you have the PR number, the branch and the ticket of the `Closes #<t>` in its body, if it has one.
+1. **The PR.** GitHub shares the number space, so `<n>` works as a PR and as a ticket: `gh pr view <n>` succeeds → that PR; it fails → the open PR whose branch starts with `<n>-` (`gh pr list --state open --json number,headRefName,isDraft`). Without a PR, stop and say so. With a `Closes #<t>` in its body, look at that ticket's labels (`gh issue view <t> --json labels`): with `wayfinder:map`, the ticket is a map and the PR is a **spec PR**, the one `jmb-to-spec` opens to land a spec. Done when you have the PR number, the branch, the ticket of the `Closes #<t>` in its body, if it has one, and whether the PR is a spec PR.
 2. **Guards.** In draft: stop, "come back when it is ready". CI pending or red (`gh pr checks`): stop. Reviewing a branch that is still going to change is wasted quota; the human decides whether to wait for green or take it out of draft. Done when the PR is ready and green.
 3. **The fixed point.** `git fetch origin`, and from there:
 
@@ -33,6 +33,8 @@ What is specific to the project comes from `docs/agents/flow.md`: each § is one
      1. **The spec follows reasoned code**: the code is compared with the spec **of the branch**, not with `main`'s; each hunk of the spec carries its why in a commit message or in the PR body, and one that does not is a finding.
      2. What the branch resolves **by analogy** goes to *Analogies* of § Spec, not to `AGENTS.md`.
      3. An edit to the spec **is checked against the sections that cite it**.
+
+     On a **spec PR**, the source is instead the map's resolutions, as step 2 of [Reading a map](../jmb-to-spec/SKILL.md#reading-a-map) in `jmb-to-spec` reads them: paste that step into the prompt, with the map's number. The kit's brief stays as it is, and its three items read as resolutions missing from the spec, spec decisions that no resolution backs, and resolutions the spec misrepresents. Rule 1 reads as: the why of each hunk of the spec is the resolution it comes from. Rule 3 still applies when the spec replaces sections already on `main`.
 
    Done when both axes have returned their report.
 5. **The comment.** The two reports under `## Standards` and `## Spec` as they are, without mixing or reordering findings between axes (the separation is what keeps one axis from covering up the other), and the kit's summary line. The first line and the exact format are in [protocol.md](protocol.md). Post it with `gh pr comment <pr> --body-file` and show the report in the terminal too. Done when the comment is on the PR.
