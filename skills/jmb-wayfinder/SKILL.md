@@ -139,8 +139,6 @@ A grilling or prototype ticket is resolved with the human, so the human confirms
 - **Changes asked for**: edit it and present it again.
 - **A resolution review asked for**: run it (below) and show its report. The human picks the findings to fix; edit the resolution and present it again. They may ask for another review.
 
-The review runs only when the human asks for it.
-
 **The resolution review** is one `general-purpose` subagent with a fresh context window, on your own model (no `model` override). Paste [RESOLUTION-REVIEW.md](RESOLUTION-REVIEW.md) whole into its prompt, since the subagent has no other way to see it, followed by the draft resolution, the ticket (body, comments and `wayfinder:<type>` label) and the map's body. It reads the rest by itself and changes nothing.
 
 Its report goes to the chat only. Nothing about the review reaches the tracker, and the resolution comment carries no "reviewed" line: the findings quote a draft that is never published. When the human keeps a refinement of an earlier decision against a finding, the resolution states it as a refinement.
